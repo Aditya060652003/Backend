@@ -4,7 +4,6 @@ import { Reservation } from '../models/reservationSchema.js';
 export const sendreservation = async (req, res, next) => {
    
     const {firstname, lastname, email, phone, date, time} = req.body;
-    console.log(req.body.firstname);
     if(!firstname || !lastname || !email || !phone || !date || !time){
         return next(new ErrorHandler("Please fill all fields", 400));
     }
@@ -19,7 +18,10 @@ export const sendreservation = async (req, res, next) => {
         if(error.name === "ValidationError"){
             const validationError = Object.values(error.errors).map((err)=> err.message);
             return next(new ErrorHandler(validationError.join(","), 400));
-            
+        
         }
+
+        return next(error);
+       
     }
-}
+};
